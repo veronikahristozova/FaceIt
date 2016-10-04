@@ -57,7 +57,7 @@ class FaceView: UIView {
     func pathForCircleCenteredAtPoint(midPoint: CGPoint, withRadius: CGFloat) -> UIBezierPath {
         let path = UIBezierPath(arcCenter: midPoint, radius: withRadius, startAngle: 0.0, endAngle: CGFloat(2*M_PI), clockwise: false)
         path.lineWidth = lineWidth
-        UIColor.blue.set()
+        UIColor.orange.set()
         return path
     }
     
@@ -130,7 +130,7 @@ class FaceView: UIView {
     
     override func draw(_ rect: CGRect) {
         pathForCircleCenteredAtPoint(midPoint: skullCenter, withRadius: skullRadius).stroke()
-        UIColor.blue.set()
+        UIColor.orange.set()
         pathForEye(eye: .Left).stroke()
         pathForEye(eye: .Right).stroke()
         pathForMouth().stroke()
