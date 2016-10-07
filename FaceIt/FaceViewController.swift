@@ -35,16 +35,44 @@ class FaceViewController: UIViewController {
     
     private var eyeBrowTilts = [FacialExpression.EyeBrows.Relaxed: 0.5, .Furrowed: -0.5, .Normal: 0.0]
     
-    @IBAction func toggleEyes(_ recognizer: UITapGestureRecognizer) {
-        if recognizer.state == .ended {
-            switch expression.eyes {
-            case .Opened: expression.eyes = .Closed
-            case .Closed: expression.eyes = .Opened
-            case .Squinting: break
+    //    @IBAction func toggleEyes(_ recognizer: UITapGestureRecognizer) {
+    //        if recognizer.state == .ended {
+    //            switch expression.eyes {
+    //            case .Opened: expression.eyes = .Closed
+    //            case .Closed: expression.eyes = .Opened
+    //            case .Squinting: break
+    //            }
+    //        }
+    //    }
+    private struct Animation {
+        static var ShakeAngle = CGFloat(M_PI/6)
+        static let ShakeDuration = 0.4
+    }
+    @IBAction func shakeHead(_ sender: UITapGestureRecognizer) {
+        UIView.animate(withDuration: Animation.ShakeDuration,
+                       animations: {
+                        self.faceView.transform = CGAffineTransform(rotationAngle: Animation.ShakeAngle)
+        }) { (finished) in
+            if finished {
+                UIView.animate(withDuration: Animation.ShakeDuration,
+                               animations: {
+                                self.faceView.transform = CGAffineTransform(rotationAngle: -Animation.ShakeAngle)
+                }) { (finished) in
+                    if finished {
+                        Animation.ShakeAngle = CGFloat(M_PI*(-2))
+                        UIView.animate(withDuration: Animation.ShakeDuration,
+                                       animations: {
+                                        self.faceView.transform = CGAffineTransform(rotationAngle: Animation.ShakeAngle)
+                        }) { (finished) in
+                            if finished {
+                                Animation.ShakeAngle = CGFloat(M_PI/6)
+                            }
+                        }
+                    }
+                }
             }
         }
     }
-    
     func increaseHappiness() {
         expression.mouth = expression.mouth.happierMouth()
     }
